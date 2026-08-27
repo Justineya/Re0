@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="256" height="320" viewBox="0 0 256 320" role="img" aria-label="‡ŒœÀÿ`M">
+  <title>sylph placeholder</title>
+  <rect width="256" height="320" fill="#3ECF8E"/>
+  <rect x="16" y="16" width="224" height="288" fill="#0E1F18" rx="8"/>
+  <circle cx="128" cy="120" r="42" fill="#7EE0B0"/>
+  <!-- swept wings -->
+  <polygon points="128,140 18,70 40,180" fill="#E8FFF4" opacity="0.8"/>
+  <polygon points="128,140 238,70 216,180" fill="#E8FFF4" opacity="0.8"/>
+  <rect x="108" y="162" width="40" height="70" rx="8" fill="#3ECF8E"/>
+  <text x="128" y="300" text-anchor="middle" fill="#E8FFF4" font-size="18" font-family="sans-serif">‡Œ ∑ Sylph</text>
+  <path d="M128 36 L136 52 L128 48 L120 52 Z" fill="#E8FFF4"/>
+</svg>

@@ -1,0 +1,95 @@
+{
+  "schema": "galeplume.locations.v1",
+  "region": {
+    "id": "reedwind_mossshadow",
+    "name_zh": "芦风原—苔影林交界",
+    "continent": "羽洲",
+    "weatherTable": [
+      { "id": "clear", "w": 45 },
+      { "id": "wind", "w": 25 },
+      { "id": "fog", "w": 12 },
+      { "id": "rain", "w": 10 },
+      { "id": "storm", "w": 5 },
+      { "id": "tide_element", "w": 3 }
+    ]
+  },
+  "locations": [
+    {
+      "id": "loc_amber_crossing",
+      "name_zh": "珀尾津",
+      "type": "starter_city",
+      "danger": 0,
+      "flightAllowed": true,
+      "flightCeilingFt": 40,
+      "pvp": "forbidden",
+      "priceIndex": 1.0,
+      "districts": [
+        "amber_gate_north",
+        "reed_market",
+        "grass_inn",
+        "wing_yard",
+        "tamer_row",
+        "clinic_mirror",
+        "forge_clamp",
+        "night_well_alley",
+        "watch_keep",
+        "south_moss_gate"
+      ],
+      "exits": ["loc_reedwind_wild", "loc_mossshadow_edge", "loc_old_canal"]
+    },
+    {
+      "id": "loc_reedwind_wild",
+      "name_zh": "芦风原",
+      "type": "wild",
+      "danger": 1,
+      "flightAllowed": true,
+      "pvp": "occasional",
+      "landmarks": ["折翼碑", "断桨湾", "商队宿营圈"],
+      "spawns": ["wind_rat", "reed_sheep"],
+      "exits": ["loc_amber_crossing", "loc_mossshadow_edge"]
+    },
+    {
+      "id": "loc_mossshadow_edge",
+      "name_zh": "苔影林边缘",
+      "type": "wild",
+      "danger": 1,
+      "dangerNight": 2,
+      "flightAllowed": true,
+      "pvp": "occasional",
+      "exits": ["loc_amber_crossing", "loc_reedwind_wild", "loc_old_canal"]
+    },
+    {
+      "id": "loc_old_canal",
+      "name_zh": "旧渠地下道",
+      "type": "dungeon_persistent",
+      "danger": 2,
+      "flightAllowed": false,
+      "pvp": "open",
+      "instance": false,
+      "notes": "非副本。走通次数提高则材料衰减。深层错误门危险度4，需调查解锁。",
+      "layers": [
+        { "id": "canal_mouth", "danger": 2, "control": "city_watch" },
+        { "id": "collapsed_post", "danger": 2, "lootDecay": true },
+        { "id": "error_door", "danger": 4, "locked": true, "tag": "steel_cocoon" }
+      ],
+      "exits": ["loc_amber_crossing", "loc_mossshadow_edge"]
+    }
+  ],
+  "homelandOverview": [
+    { "race": "sylph", "city": "风廊城", "hoursCruiseFromStart": 14 },
+    { "race": "salamander", "city": "熔冠城", "caravanDays": 11 },
+    { "race": "undine", "city": "镜泽城", "riverDays": 6 },
+    { "race": "gnome", "city": "石心城", "railDays": 4 },
+    { "race": "cait_sith", "city": "珀尾京", "roadDays": 2 },
+    { "race": "pooka", "city": "弦都", "roadDays": 8 },
+    { "race": "imp", "city": "夜井城", "needPass": true },
+    { "race": "spriggan", "city": "残碑城", "navHazard": "fog" },
+    { "race": "leprechaun", "city": "炉环城", "mixedDays": 5 }
+  ],
+  "worldTree": {
+    "id": "arbor_axis",
+    "name_zh": "天枢木",
+    "visibleFromStart": true,
+    "raidStatusDefault": "cloud_ring_3_stalled"
+  }
+}

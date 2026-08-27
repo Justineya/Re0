@@ -1,0 +1,144 @@
+{
+  "schema": "galeplume.npcs.v1",
+  "city": "loc_amber_crossing",
+  "npcs": [
+    {
+      "id": "npc_luhua",
+      "name_zh": "芦花",
+      "race": "cait_sith",
+      "role": "草廊客栈掌柜",
+      "portraitId": "npc_luhua",
+      "goals": ["把客栈传到侄女手里", "不加入公会"],
+      "secret": "年轻时为情报行跑信，欠夜井城人情",
+      "schedule": { "dawn": "采购", "noon": "柜台", "dusk": "听闲话", "night": "锁兽栏" },
+      "spines": ["A"],
+      "tutorial": ["bed", "fishing_rental", "rumor_vs_eye"]
+    },
+    {
+      "id": "npc_tieqian",
+      "name_zh": "铁钳·炉",
+      "race": "leprechaun",
+      "role": "钳炉锻造",
+      "portraitId": "npc_tieqian",
+      "goals": ["优质铁年产达标", "买回炉环图纸权"],
+      "secret": "收旧渠来路矿",
+      "schedule": { "dawn": "锻造", "noon": "收活", "dusk": "记账", "night": "偶去夜井巷" },
+      "spines": ["A", "F"],
+      "tutorial": ["repair"]
+    },
+    {
+      "id": "npc_jingchuan",
+      "name_zh": "镜川",
+      "race": "undine",
+      "role": "诊所医师",
+      "portraitId": "npc_jingchuan",
+      "goals": ["压住津内死亡率", "不被议会调走"],
+      "secret": "异常伤口日志上锁",
+      "schedule": { "dawn": "巡诊", "noon": "门诊", "dusk": "制药", "night": "仅急诊" },
+      "spines": ["E"]
+    },
+    {
+      "id": "npc_quefeng",
+      "name_zh": "雀风",
+      "race": "sylph",
+      "role": "试飞场教官",
+      "portraitId": "npc_quefeng",
+      "goals": ["少让新手摔死", "攒翅骨钱"],
+      "secret": "被攻略组以精力药剂违规除名，无公开证据",
+      "schedule": { "dawn": "试飞场", "noon": "试飞场", "dusk": "试飞场", "night": "草廊喝酒" },
+      "spines": ["D"],
+      "tutorial": ["first_flight"]
+    },
+    {
+      "id": "npc_mobei",
+      "name_zh": "墨碑",
+      "race": "spriggan",
+      "role": "芦市消息摊",
+      "portraitId": "npc_mobei",
+      "goals": ["卖出本周最大单"],
+      "secret": "部分天枢新闻是他写的",
+      "schedule": { "dawn": "收集", "noon": "叫卖", "dusk": "改稿", "night": "消失" },
+      "spines": ["D", "F"],
+      "tutorial": ["rumor_tag"]
+    },
+    {
+      "id": "npc_chisha",
+      "name_zh": "赤砂",
+      "race": "salamander",
+      "role": "佣兵掮客",
+      "portraitId": "npc_chisha",
+      "goals": ["拉满护卫合同"],
+      "secret": "策划可否认的磐根商队摩擦",
+      "schedule": { "dawn": "北驿门", "noon": "北驿门", "dusk": "酒馆", "night": "招人" },
+      "spines": ["B", "C", "F"]
+    },
+    {
+      "id": "npc_taixu",
+      "name_zh": "苔须",
+      "race": "gnome",
+      "role": "矿运",
+      "portraitId": "npc_taixu",
+      "goals": ["把合金送到津", "寄钱回家"],
+      "secret": "藏钢茧质感矿",
+      "schedule": { "dawn": "北门", "noon": "芦风原", "dusk": "交货", "night": "早睡" },
+      "spines": ["E", "F"],
+      "tutorial": ["npc_told_raid"]
+    },
+    {
+      "id": "npc_ling_xiaoman",
+      "name_zh": "铃小满",
+      "race": "pooka",
+      "role": "街演",
+      "portraitId": "npc_ling_xiaoman",
+      "goals": ["攒弦都演出许可费"],
+      "secret": "曲中编码公会人事",
+      "schedule": { "dawn": "练琴", "noon": "芦市", "dusk": "芦市", "night": "客栈小舞台" },
+      "spines": ["B"]
+    },
+    {
+      "id": "npc_jingdi",
+      "name_zh": "井底",
+      "race": "imp",
+      "role": "夜井巷摊主",
+      "portraitId": "npc_jingdi",
+      "goals": ["不暴露自己不太像玩家"],
+      "secret": "钢茧清扫进程残留人格（设计层）",
+      "schedule": { "dawn": "不见", "noon": "少见", "dusk": "出摊", "night": "出摊" },
+      "spines": ["E"]
+    },
+    {
+      "id": "npc_asui",
+      "name_zh": "阿穗",
+      "race": "cait_sith",
+      "role": "驯兽街掌柜",
+      "portraitId": "npc_asui",
+      "goals": ["店不倒", "兽不瘟"],
+      "secret": "兽「琥珀」对错误门会异常鸣叫",
+      "schedule": { "dawn": "驯兽街", "noon": "驯兽街", "dusk": "收摊准备", "night": "兽栏" },
+      "spines": ["A", "E"]
+    },
+    {
+      "id": "npc_shian",
+      "name_zh": "石岸",
+      "race": "gnome",
+      "role": "卫队长",
+      "portraitId": "npc_shian",
+      "goals": ["北门数字好看", "退休金"],
+      "secret": "收过封口钱",
+      "schedule": { "dawn": "训卫", "noon": "城门", "dusk": "告示", "night": "巡逻抽签" },
+      "spines": ["B", "C"]
+    },
+    {
+      "id": "npc_huiya",
+      "name_zh": "灰芽",
+      "race": "sylph",
+      "role": "新手玩家（NPC化）",
+      "portraitId": "npc_huiya",
+      "goals": ["学会飞", "别被笑"],
+      "secret": "无隐藏血统",
+      "schedule": { "dawn": "试飞场", "noon": "北门一带", "dusk": "乱", "night": "客栈或野外迷航" },
+      "spines": ["D"],
+      "causalEdge": "save_huiya"
+    }
+  ]
+}

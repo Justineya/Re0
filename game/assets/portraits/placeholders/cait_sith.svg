@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="256" height="320" viewBox="0 0 256 320" role="img" aria-label="À>ÏËØ`M">
+  <title>cait_sith placeholder</title>
+  <rect width="256" height="320" fill="#6B8F3A"/>
+  <rect x="16" y="16" width="224" height="288" fill="#1A2214" rx="8"/>
+  <circle cx="128" cy="118" r="44" fill="#E6A23C"/>
+  <!-- ears -->
+  <polygon points="92,88 78,42 112,78" fill="#E6A23C"/>
+  <polygon points="164,88 178,42 144,78" fill="#E6A23C"/>
+  <polygon points="94,84 86,52 108,76" fill="#F5D7A0"/>
+  <polygon points="162,84 170,52 148,76" fill="#F5D7A0"/>
+  <!-- soft wings -->
+  <ellipse cx="48" cy="160" rx="28" ry="52" fill="#C4D98A" opacity="0.85"/>
+  <ellipse cx="208" cy="160" rx="28" ry="52" fill="#C4D98A" opacity="0.85"/>
+  <!-- tail -->
+  <path d="M150 210 Q210 230 200 290" fill="none" stroke="#E6A23C" stroke-width="10" stroke-linecap="round"/>
+  <text x="128" y="300" text-anchor="middle" fill="#F5E6C8" font-size="18" font-family="sans-serif">À> · Cait Sith</text>
+  <!-- rune -->
+  <circle cx="128" cy="48" r="10" fill="none" stroke="#E6A23C" stroke-width="2"/>
+  <circle cx="128" cy="48" r="4" fill="#E6A23C"/>
+</svg>

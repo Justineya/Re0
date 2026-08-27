@@ -1,0 +1,47 @@
+{
+  "schema": "galeplume.portraits.v1",
+  "assetRoot": "game/assets/portraits/",
+  "phases": [
+    "placeholder_svg",
+    "locked_prompt_still",
+    "optional_psd_spine"
+  ],
+  "expressions": ["idle", "talk", "hurt", "angry"],
+  "npcExpressionMaxV1": 3,
+  "outfitTiers": ["novice", "artisan", "raider"],
+  "playerSliders": ["height_3", "hair_color", "wing_color", "ear_tail_length"],
+  "negativePrompt": "photorealistic, 3d render, western oil painting, extra wings, extra ears, copyright character, named franchise hero, messy background, gore, overdesigned legendary armor, watermark, text, logo, duplicate face",
+  "promptTemplateZh": "动漫相邻半身立绘，妖精VR，翅膀入画，种族可辨，服装阶层{outfit}，表情{expression_cn}。原创角色，不是任何现有动画主角。",
+  "promptTemplateEn": "Anime-adjacent character portrait, waist-up, clean line art, consistent fairy-VR MMO look, one pair of visible wings, readable silhouette, soft studio lighting, plain rune backdrop. Race: {race_en} fairy ({race_cn}). Wing silhouette: {wing_keyword}. Outfit tier: {outfit} — {costumeToken}. Hair: {hair}. Body type: {body}. Expression: {expression}. Color palette: {hex_primary} and {hex_secondary}. No photoreal skin pores, no crowded background, no extra limbs.",
+  "templates": [
+    {
+      "id": "tpl_cait_sith_novice",
+      "race": "cait_sith",
+      "body": "androgynous_m",
+      "hair": "short_amber",
+      "wings": "cait_soft_01",
+      "outfit": "novice",
+      "seed": 482716,
+      "costumeToken": "reed-linen tunic, leather tamer sash, small ear tufts, amber-tipped tail, unarmored",
+      "wingKeyword": "soft wings, cat ears and tail visible",
+      "placeholder": "placeholders/cait_sith.svg"
+    },
+    {
+      "id": "tpl_sylph_novice",
+      "race": "sylph",
+      "body": "androgynous_f",
+      "hair": "wind_cut_teal",
+      "wings": "sylph_swept_01",
+      "outfit": "novice",
+      "seed": 193055,
+      "costumeToken": "light scout linen, ankle wraps, no legendary armor",
+      "wingKeyword": "narrow swept-back wings",
+      "placeholder": "placeholders/sylph.svg"
+    }
+  ],
+  "npcBindings": [
+    { "npcId": "npc_luhua", "templateHint": "tpl_cait_sith_novice", "outfit": "artisan", "expressions": ["idle", "talk", "angry"] },
+    { "npcId": "npc_quefeng", "templateHint": "tpl_sylph_novice", "outfit": "artisan", "expressions": ["idle", "talk", "angry"] },
+    { "npcId": "npc_huiya", "templateHint": "tpl_sylph_novice", "outfit": "novice", "expressions": ["idle", "talk", "hurt"] }
+  ]
+}

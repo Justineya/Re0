@@ -1,0 +1,92 @@
+{
+  "schema": "galeplume.onboarding.v1",
+  "productTitle": "岚羽 Online　九族世界模拟",
+  "productSubtitle": "你不是被选中的人。你只是其中一个有翅膀的人。",
+  "recommendedEra": "era_tree_stall",
+  "startLocation": "loc_amber_crossing",
+  "startDistrict": "wing_yard",
+  "hudExample": {
+    "calendar": "岚历 7年·芽风月　晨",
+    "hp": 100,
+    "mp": 80,
+    "sta": 100,
+    "lan": 80,
+    "danger": 0
+  },
+  "beats": [
+    {
+      "id": "b0_title",
+      "ui": ["创建角色", "读取存档", "设定"]
+    },
+    {
+      "id": "b1_create",
+      "fields": ["era", "race", "origin", "name", "age", "gender", "birthplace", "irl", "skills", "affinity", "traits", "goal", "sim_style"],
+      "origins": [
+        "solo_novice",
+        "craft_apprentice",
+        "merchant",
+        "info_broker",
+        "guild_newbie",
+        "raid_hopeful",
+        "mercenary",
+        "tamer_apprentice",
+        "casual",
+        "cocoon_related_flavor_only",
+        "custom"
+      ],
+      "submit": "展开第一对翅膀"
+    },
+    {
+      "id": "b2_login",
+      "operatorCrawl": [
+        "澄空织造　·　岚羽协议",
+        "校准翅膀神经映射……",
+        "注意：空中精力耗尽将强制降落。"
+      ],
+      "npc": "npc_quefeng",
+      "copy": "新翅膀？看牌子。STA 掉到两成就给我落地。摔伤的修理费自理，诊所在镜川那儿。"
+    },
+    {
+      "id": "b3_safe_walk",
+      "npc": "npc_luhua",
+      "copy": "欢迎来津。床 8 岚铢一晚，包一口粥。渔具 3 铢日租。天枢木的板报在芦市。别全信。"
+    },
+    {
+      "id": "b4_flight",
+      "npc": "npc_quefeng",
+      "staWarnAt": 20,
+      "cruiseStaPerSec": 1.2,
+      "copyWarn": "⚠ 精力 20%　强制降落协议将在 0% 启动。"
+    },
+    {
+      "id": "b5_economy",
+      "npcs": ["npc_tieqian", "npc_luhua", "npc_asui"],
+      "repairCost": 12,
+      "repairApprentice": 9,
+      "foodDry": 4,
+      "foodSoup": 6
+    },
+    {
+      "id": "b6_intel",
+      "rumorNpc": "npc_mobei",
+      "rumorCopy": "独家！云环已破，枢卫倒下！资料 15 铢！",
+      "rumorGrade": "rumor",
+      "eyewitnessLimit": "仅远影，无攻略进度",
+      "npcTold": { "npc": "npc_taixu", "grade": "npc_told", "copy": "营地还在。有人死了游戏里那种。没破。" }
+    },
+    {
+      "id": "b7_optional_combat",
+      "location": "loc_reedwind_wild",
+      "skippable": true,
+      "actions": ["fight", "shoo", "bypass", "help_huiya_no_fight"],
+      "causalOnHelp": "save_huiya"
+    },
+    {
+      "id": "b8_fishing",
+      "location": "断桨湾",
+      "rental": 3,
+      "worldContinues": true,
+      "closeOnce": "你不在场的时候，羽洲没有暂停。"
+    }
+  ]
+}
