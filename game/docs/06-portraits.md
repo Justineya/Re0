@@ -122,7 +122,7 @@ No photoreal skin pores, no crowded background, no extra limbs.
 原创角色，不是任何现有动画主角。
 ```
 
-`costumeToken` 例（珀尾新手）：  
+`costumeToken` 例（猫妖新手）：  
 `reed-linen tunic, leather tamer sash, small ear tufts, amber-tipped tail, unarmored`
 
 ### 4.2 Negative

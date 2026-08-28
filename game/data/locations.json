@@ -1,9 +1,9 @@
 {
-  "schema": "galeplume.locations.v1",
+  "schema": "alo.locations.v1",
   "region": {
     "id": "reedwind_mossshadow",
-    "name_zh": "芦风原—苔影林交界",
-    "continent": "羽洲",
+    "name_zh": "弗莉莉亚周边·草原—森林交界",
+    "continent": "阿尔普海姆",
     "weatherTable": [
       { "id": "clear", "w": 45 },
       { "id": "wind", "w": 25 },
@@ -16,7 +16,7 @@
   "locations": [
     {
       "id": "loc_amber_crossing",
-      "name_zh": "珀尾津",
+      "name_zh": "弗莉莉亚",
       "type": "starter_city",
       "danger": 0,
       "flightAllowed": true,
@@ -39,18 +39,18 @@
     },
     {
       "id": "loc_reedwind_wild",
-      "name_zh": "芦风原",
+      "name_zh": "弗莉莉亚北原",
       "type": "wild",
       "danger": 1,
       "flightAllowed": true,
       "pvp": "occasional",
-      "landmarks": ["折翼碑", "断桨湾", "商队宿营圈"],
+      "landmarks": ["折翼碑", "折桨湾", "商队宿营圈"],
       "spawns": ["wind_rat", "reed_sheep"],
       "exits": ["loc_amber_crossing", "loc_mossshadow_edge"]
     },
     {
       "id": "loc_mossshadow_edge",
-      "name_zh": "苔影林边缘",
+      "name_zh": "弗莉莉亚南林缘",
       "type": "wild",
       "danger": 1,
       "dangerNight": 2,
@@ -70,25 +70,25 @@
       "layers": [
         { "id": "canal_mouth", "danger": 2, "control": "city_watch" },
         { "id": "collapsed_post", "danger": 2, "lootDecay": true },
-        { "id": "error_door", "danger": 4, "locked": true, "tag": "steel_cocoon" }
+        { "id": "error_door", "danger": 4, "locked": true, "tag": "sao_fragment" }
       ],
       "exits": ["loc_amber_crossing", "loc_mossshadow_edge"]
     }
   ],
   "homelandOverview": [
-    { "race": "sylph", "city": "风廊城", "hoursCruiseFromStart": 14 },
-    { "race": "salamander", "city": "熔冠城", "caravanDays": 11 },
-    { "race": "undine", "city": "镜泽城", "riverDays": 6 },
-    { "race": "gnome", "city": "石心城", "railDays": 4 },
-    { "race": "cait_sith", "city": "珀尾京", "roadDays": 2 },
-    { "race": "pooka", "city": "弦都", "roadDays": 8 },
-    { "race": "imp", "city": "夜井城", "needPass": true },
-    { "race": "spriggan", "city": "残碑城", "navHazard": "fog" },
-    { "race": "leprechaun", "city": "炉环城", "mixedDays": 5 }
+    { "race": "sylph", "city": "司伊鲁班", "hoursCruiseFromStart": 14 },
+    { "race": "salamander", "city": "卡坦", "caravanDays": 11 },
+    { "race": "undine", "city": "翁迪纳主城", "riverDays": 6 },
+    { "race": "gnome", "city": "地精灵领地", "railDays": 4 },
+    { "race": "cait_sith", "city": "弗莉莉亚", "roadDays": 2 },
+    { "race": "pooka", "city": "音乐精灵主城", "roadDays": 8 },
+    { "race": "imp", "city": "暗精灵洞窟都市", "needPass": true },
+    { "race": "spriggan", "city": "影精灵遗迹城", "navHazard": "fog" },
+    { "race": "leprechaun", "city": "锻造精灵工房都市", "mixedDays": 5 }
   ],
   "worldTree": {
-    "id": "arbor_axis",
-    "name_zh": "天枢木",
+    "id": "yggdrasil",
+    "name_zh": "世界树",
     "visibleFromStart": true,
     "raidStatusDefault": "cloud_ring_3_stalled"
   }

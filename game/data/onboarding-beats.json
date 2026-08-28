@@ -1,6 +1,6 @@
 {
-  "schema": "galeplume.onboarding.v1",
-  "productTitle": "岚羽 Online　九族世界模拟",
+  "schema": "alo.onboarding.v1",
+  "productTitle": "ALfheim Online　九族世界模拟",
   "productSubtitle": "你不是被选中的人。你只是其中一个有翅膀的人。",
   "recommendedEra": "era_tree_stall",
   "startLocation": "loc_amber_crossing",
@@ -39,7 +39,7 @@
     {
       "id": "b2_login",
       "operatorCrawl": [
-        "澄空织造　·　岚羽协议",
+        "RECT Progressive　·　ALO 登录协议",
         "校准翅膀神经映射……",
         "注意：空中精力耗尽将强制降落。"
       ],
@@ -49,7 +49,7 @@
     {
       "id": "b3_safe_walk",
       "npc": "npc_luhua",
-      "copy": "欢迎来津。床 8 岚铢一晚，包一口粥。渔具 3 铢日租。天枢木的板报在芦市。别全信。"
+      "copy": "欢迎来津。床 8 Yrd一晚，包一口粥。渔具 3 铢日租。世界树的板报在弗莉莉亚市集。别全信。"
     },
     {
       "id": "b4_flight",
@@ -83,10 +83,10 @@
     },
     {
       "id": "b8_fishing",
-      "location": "断桨湾",
+      "location": "折桨湾",
       "rental": 3,
       "worldContinues": true,
-      "closeOnce": "你不在场的时候，羽洲没有暂停。"
+      "closeOnce": "你不在场的时候，阿尔普海姆没有暂停。"
     }
   ]
 }

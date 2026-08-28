@@ -1,5 +1,5 @@
 {
-  "schema": "galeplume.portraits.v1",
+  "schema": "alo.portraits.v1",
   "assetRoot": "game/assets/portraits/",
   "phases": [
     "placeholder_svg",
