@@ -6,6 +6,8 @@ import { fileURLToPath } from "node:url";
 const root = path.dirname(fileURLToPath(import.meta.url));
 
 export default defineConfig({
+  // Project Pages URL: https://Justineya.github.io/Re0/
+  base: "/Re0/",
   plugins: [react()],
   resolve: {
     alias: {
