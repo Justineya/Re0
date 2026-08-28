@@ -5,6 +5,7 @@ import type { GameAction, GameState } from "../sim/types";
 import { CommandMenu } from "./CommandMenu";
 import { MiniMap } from "./MiniMap";
 import { NarrativeLog } from "./NarrativeLog";
+import { ObjectiveStrip } from "./ObjectiveStrip";
 import { PortraitSlot } from "./PortraitSlot";
 import { StatusPanel } from "./StatusPanel";
 
@@ -27,12 +28,7 @@ export function GameHud({
   const people = npcsHere(state);
   const focusNpc = state.log.slice().reverse().find((e) => e.speakerId)?.speakerId ?? people[0];
   const portraitRace = state.player.race;
-  const checks = [
-    { ok: Boolean(state.flags.sta_warned), lab: "理解 STA 警告" },
-    { ok: Boolean(state.flags.paid_food || state.flags.paid_repair), lab: "付过一次食物或修理" },
-    { ok: Boolean(state.flags.bought_mobei_rumor), lab: "至少一条传闻标签的情报" },
-    { ok: Boolean(state.flags.skipped_fight || state.flags.combat_resolved), lab: "知道战斗可跳" },
-  ];
+  const guiding = !state.flags.tutorial_graduated && !state.flags.tutorial_skipped;
 
   return (
     <div className="hud">
@@ -55,26 +51,16 @@ export function GameHud({
           }
           npcId={focusNpc && people.includes(focusNpc) ? focusNpc : null}
         />
-        <div className="panel obj">
-          <div style={{ color: "var(--gold)", letterSpacing: "0.12em", marginBottom: 6 }}>OPTIONAL</div>
-          <ul style={{ margin: 0, paddingLeft: "1.1rem" }}>
-            {checks.map((c) => (
-              <li key={c.lab} className={c.ok ? "done" : ""}>
-                {c.ok ? "☑" : "☐"} {c.lab}
-              </li>
-            ))}
-          </ul>
-          <p style={{ margin: "0.5rem 0 0", fontSize: "0.72rem" }}>全部可选。完成度 0 也可以存档。</p>
-        </div>
+        <ObjectiveStrip state={state} />
       </div>
       <NarrativeLog state={state} />
       <div className="hud-right">
         <StatusPanel state={state} />
         <MiniMap state={state} />
         <div className="panel people">
-          <div style={{ color: "var(--gold)", letterSpacing: "0.16em", fontSize: "0.78rem" }}>PEOPLE</div>
+          <div style={{ color: "var(--gold)", letterSpacing: "0.16em", fontSize: "0.78rem" }}>在场人物</div>
           {people.length === 0 ? (
-            <p style={{ color: "var(--muted)" }}>这一刻没人在你旁边。世界仍在别处忙。</p>
+            <p style={{ color: "var(--muted)" }}>这一刻没人在你旁边。</p>
           ) : (
             <ul>
               {people.map((id) => (
@@ -85,6 +71,9 @@ export function GameHud({
         </div>
       </div>
       <div className="hud-bottom">
+        {guiding ? (
+          <div className="cmd-hint-banner">入门中：下方只显示当前相关指令 · 黄色按钮 = 建议下一步</div>
+        ) : null}
         <CommandMenu commands={cmds} onAction={onAction} />
       </div>
     </div>

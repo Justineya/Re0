@@ -1,4 +1,5 @@
 import { ADJACENT, COSTS, DISTRICT_META, districtName } from "./content";
+import { filterCommandsByGuide } from "./guide";
 import { npcsHere, npcLabel } from "./npcs";
 import { DAYS_PER_MONTH } from "./time";
 import type { CommandDef, GameState } from "./types";
@@ -177,15 +178,15 @@ export function listCommands(state: GameState): CommandDef[] {
     },
   );
 
-  if (!state.flags.tutorial_skipped && !state.flags.first_flight) {
+  if (!state.flags.tutorial_skipped && !state.flags.tutorial_graduated) {
     cmds.push({
       id: "skip-tut",
-      label: "跳过教程对话",
-      hint: "保留 HUD 警告",
+      label: "跳过入门引导",
+      hint: "之后指令全部开放",
       group: "meta",
       action: { type: "SKIP_TUTORIAL" },
     });
   }
 
-  return cmds;
+  return filterCommandsByGuide(state, cmds);
 }

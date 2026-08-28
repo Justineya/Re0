@@ -36,14 +36,15 @@ export function weatherZh(id: string): string {
 }
 
 export const LOGIN_CRAWL = [
-  "RECT Progressive　·　ALO 登录协议",
-  "校准翅膀神经映射……",
-  "精力池：已连接。落地缓冲：已连接。",
-  "注意：空中精力耗尽将强制降落。",
+  "你要进入的是《ALfheim Online》——文字版人生模拟，不是聊天机器人。",
+  "玩法：看中间的故事 → 点下方指令行动。不用打字。",
+  "开局城市：猫妖领地弗莉莉亚。你只是普通玩家，不是天选者。",
+  "入门只做三件事：① 试飞一次　② 去客栈吃饭/开房　③ 在市集买一条「传闻」。",
+  "右侧面板是血量、精力 STA、金钱 Yrd。飞会耗 STA；吃饭会花钱。",
 ];
 
 export function landingProse(state: GameState): string {
-  return `你的靴子踩在木桩上。风从弗莉莉亚北原来，带着草腥。北面，世界树只是一条淡青的柱影——很远。没有人鼓掌。${p(state).name}，猫耳或别的种族标记都只是账号皮肤。没人核对你的人生目标。`;
+  return `【你在哪里】弗莉莉亚 · 试飞场。账号名：${p(state).name}。\n【发生了什么】你刚登录 ALO。没有欢迎仪式，没有隐藏血统。远处那根淡青柱影是世界树——现在还轮不到你。\n【怎么玩】看完这段，去点下方高亮的「第一次低空巡航」。左上角「现在该做什么」会一步步带你。`;
 }
 
 export function talkCopy(state: GameState, npcId: string, first: boolean): string {

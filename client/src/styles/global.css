@@ -110,10 +110,82 @@ h1, h2, .display {
   line-height: 1.7;
 }
 .title-actions { display: flex; gap: 0.8rem; justify-content: center; flex-wrap: wrap; }
+.how-to-play {
+  margin: -0.6rem auto 1.6rem;
+  max-width: 36rem;
+  font-size: 0.92rem;
+  line-height: 1.65;
+  color: var(--gold-2);
+  background: rgba(107, 143, 58, 0.12);
+  border: 1px solid rgba(107, 143, 58, 0.35);
+  padding: 0.7rem 1rem;
+}
 .fan-note {
   margin-top: 1.6rem;
   font-size: 0.75rem;
   color: #6f6758;
+}
+.advanced-toggle {
+  margin-top: 1rem;
+  width: 100%;
+}
+.crawl-kicker {
+  color: var(--leaf) !important;
+  letter-spacing: 0.14em;
+  font-size: 0.78rem !important;
+  font-family: "Noto Sans SC", sans-serif !important;
+  line-height: 1.4 !important;
+}
+.crawl-title {
+  margin: 0.2rem 0 0.8rem;
+  color: var(--gold);
+  font-size: 1.25rem;
+}
+.crawl-list {
+  margin: 0;
+  padding-left: 1.2rem;
+  color: var(--gold-2);
+  font-family: "Noto Serif SC", serif;
+  line-height: 1.85;
+  font-size: 0.98rem;
+}
+.crawl-list li { margin: 0.35rem 0; }
+.crawl-next {
+  margin: 1rem 0 0;
+  color: var(--muted);
+  font-size: 0.9rem;
+  line-height: 1.65;
+}
+.guide-obj {
+  padding: 0.75rem 0.8rem;
+}
+.guide-obj .obj-kicker {
+  color: var(--leaf);
+  letter-spacing: 0.1em;
+  font-size: 0.72rem;
+  margin-bottom: 0.35rem;
+}
+.guide-obj .obj-title {
+  color: var(--gold-2);
+  font-family: "Noto Serif SC", serif;
+  font-size: 0.95rem;
+  margin-bottom: 0.4rem;
+}
+.guide-obj .obj-body {
+  margin: 0;
+  font-size: 0.78rem;
+  line-height: 1.55;
+  color: var(--muted);
+}
+.guide-obj.done .obj-kicker { color: var(--gold); }
+.cmd-hint-banner {
+  font-size: 0.78rem;
+  color: #ffe9b8;
+  background: rgba(90, 62, 22, 0.55);
+  border: 1px solid var(--gold);
+  padding: 0.4rem 0.7rem;
+  margin-bottom: 0.45rem;
+  letter-spacing: 0.04em;
 }
 
 .create-wrap {

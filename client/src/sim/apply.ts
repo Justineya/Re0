@@ -1,5 +1,6 @@
 import { ADJACENT, COSTS, DISTRICT_META, locById, raceById } from "./content";
 import { createNewGame } from "./create";
+import { freePlayBlurb, guideJustFinished } from "./guide";
 import { applyMonthTick } from "./month";
 import {
   crashProse,
@@ -208,16 +209,17 @@ export function reduce(state: GameState, action: GameAction): GameState {
       push(s, {
         kind: "hud",
         beat: "b2",
-        text: "试飞场规则\n· 城内限高 40 尺\n· 精力 ≤20% 必须降落\n· 雷暴关闭\n· 教官不负责你的人生目标",
+        text: "试飞场小抄\n· 点下方黄色「第一次低空巡航」\n· STA（精力）≤20% 必须降落\n· 城内限高 40 尺\n· 左侧「现在该做什么」= 当前目标",
       });
       push(s, {
         kind: "system",
-        text: "可选（不强制）：完成一次往返低空巡航 · 去草尾客栈登记床位 · 无视教程，走出北门",
+        text: "入门引导已开启：一次只开放少量指令。不想学可点「跳过入门引导」。",
       });
       return s;
     }
     case "SKIP_TUTORIAL":
       setFlag(s, "tutorial_skipped");
+      setFlag(s, "tutorial_graduated");
       setFlag(s, "login_done");
       s.screen = "game";
       if (s.log.length === 0) {
@@ -225,7 +227,7 @@ export function reduce(state: GameState, action: GameAction): GameState {
       }
       push(s, {
         kind: "system",
-        text: "教程对话已跳过。HUD 警告与危险度仍在。世界不等你。",
+        text: "已跳过入门。全部指令开放。STA 警告与危险度仍在——世界不等你。",
       });
       return s;
     case "MOVE": {
@@ -461,8 +463,21 @@ export function reduce(state: GameState, action: GameAction): GameState {
       return s;
     }
     case "BUY_RUMOR": {
-      if (s.world.districtId !== "reed_market" || !npcsHere(s).includes("npc_mobei")) {
-        push(s, { kind: "system", text: "墨碑这一刻不在摊上。" });
+      // 入门阶段允许买到假新闻，避免晚上墨碑不在摊导致卡关
+      const tutorialIntel =
+        !s.flags.tutorial_graduated &&
+        !s.flags.tutorial_skipped &&
+        !s.flags.bought_mobei_rumor;
+      if (
+        s.world.districtId !== "reed_market" ||
+        (!tutorialIntel && !npcsHere(s).includes("npc_mobei"))
+      ) {
+        push(s, {
+          kind: "system",
+          text: tutorialIntel
+            ? "先到弗莉莉亚市集再买情报。"
+            : "墨碑这一刻不在摊上。等到晨/午/黄昏再来，或点「等待」。",
+        });
         return s;
       }
       if (!pay(s, COSTS.rumor)) {
@@ -679,5 +694,10 @@ export function reduce(state: GameState, action: GameAction): GameState {
 }
 
 export function applyAction(state: GameState, action: GameAction): GameState {
-  return reduce(state, action);
+  const s = reduce(state, action);
+  if (guideJustFinished(s)) {
+    setFlag(s, "tutorial_graduated");
+    push(s, { kind: "system", text: freePlayBlurb() });
+  }
+  return s;
 }

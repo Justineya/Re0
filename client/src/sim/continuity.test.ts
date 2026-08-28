@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 import { applyAction } from "./apply";
 import { createNewGame } from "./create";
 import { parseSave, serialize } from "../save/persist";
-import { hoursToMonthEnd } from "./commands";
+import { hoursToMonthEnd, listCommands } from "./commands";
 
 const payload = {
   name: "芦哨",
@@ -112,5 +112,27 @@ describe("ALO MVP continuity", () => {
     expect(g.intel.some((i) => i.grade === "rumor")).toBe(false);
     expect(g.player.yrd).toBeLessThan(100);
     expect(Object.keys(g).join()).not.toMatch(/legendary|mythic/);
+  });
+
+  it("guided onboarding narrows commands then graduates", () => {
+    let g = applyAction(createNewGame(payload, 9), { type: "FINISH_LOGIN" });
+    let ids = listCommands(g).map((c) => c.id);
+    expect(ids).toContain("f-up");
+    expect(ids).not.toContain("wmonth");
+    g = applyAction(g, { type: "FLIGHT", mode: "cruise" });
+    ids = listCommands(g).map((c) => c.id);
+    expect(ids).toContain("m-grass_inn");
+    g = applyAction(g, { type: "MOVE", districtId: "grass_inn" });
+    g = applyAction(g, { type: "EAT", item: "soup" });
+    // Keep morning/noon so 墨碑在市集
+    g = {
+      ...g,
+      world: { ...g.world, hourOfDay: 11, day: g.world.day },
+    };
+    g = applyAction(g, { type: "MOVE", districtId: "reed_market" });
+    g = applyAction(g, { type: "BUY_RUMOR" });
+    expect(g.flags.tutorial_graduated).toBeTruthy();
+    ids = listCommands(g).map((c) => c.id);
+    expect(ids).toContain("wmonth");
   });
 });

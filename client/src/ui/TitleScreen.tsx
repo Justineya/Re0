@@ -19,9 +19,12 @@ export function TitleScreen({
         </div>
         <h1>{onboarding.productTitle}</h1>
         <p className="sub">{onboarding.productSubtitle}</p>
+        <p className="how-to-play">
+          文字 RPG：看故事 → 点指令。不用打字。开局在弗莉莉亚，三步入门（飞 / 吃饭 / 听传闻）。
+        </p>
         <div className="title-actions">
           <button type="button" className="btn primary" onClick={onCreate}>
-            创建角色
+            新游戏
           </button>
           <button type="button" className="btn" onClick={onLoad} disabled={!hasSave}>
             读取存档

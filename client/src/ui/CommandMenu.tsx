@@ -24,8 +24,8 @@ export function CommandMenu({
   return (
     <div className="panel cmd">
       <div className="cmd-head">
-        <span>COMMAND</span>
-        <span style={{ color: "var(--muted)", letterSpacing: "0.04em" }}>选择行动 · 不是聊天框</span>
+        <span>指令</span>
+        <span style={{ color: "var(--muted)", letterSpacing: "0.04em" }}>点按钮行动 · 不是聊天输入</span>
       </div>
       <div className="cmd-groups">
         {groups.map(({ g, items }) => (

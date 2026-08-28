@@ -23,7 +23,7 @@ const defaultPayload = (): CreatePayload => ({
   irl: "夜班后登录",
   affinity: "balanced",
   traits: "谨慎, 嘴快, 不肯当先锋",
-  goal: "先活过这个月，再决定要不要看世界树",
+  goal: "先搞清楚怎么在弗莉莉亚活下去",
   simStyle: "daily",
 });
 
@@ -36,6 +36,7 @@ export function CreateScreen({
 }) {
   const [p, setP] = useState<CreatePayload>(defaultPayload);
   const [err, setErr] = useState<string | null>(null);
+  const [advanced, setAdvanced] = useState(false);
   const race = useMemo(() => raceById(p.race), [p.race]);
 
   function set<K extends keyof CreatePayload>(k: K, v: CreatePayload[K]) {
@@ -45,36 +46,26 @@ export function CreateScreen({
   return (
     <div className="screen-center">
       <div className="panel create-wrap">
-        <h2>选择你的起点　·　提交后世界不会为你重排。</h2>
-        <p className="create-lead">时代决定开局新闻与物价，不决定你的命运。种族不是职业。外观可调，特性仍来自九族之一。</p>
+        <h2>创建角色</h2>
+        <p className="create-lead">
+          这是文字 RPG：进入后用<strong>底部按钮</strong>行动，不用打字。默认已选好「新生 ALO · 猫妖 · 驯兽学徒 · 弗莉莉亚」——你只需填名字，后面会有三步入门。
+        </p>
         <div className="form-grid">
-          <label>
-            姓名
-            <input value={p.name} onChange={(e) => set("name", e.target.value)} placeholder="账号名" />
-          </label>
-          <label>
-            外观年龄
-            <input value={p.ageLook} onChange={(e) => set("ageLook", e.target.value)} />
-          </label>
-          <label>
-            时代
-            <span className="help">停滞期适合先学生活。攻略仍在远处失败。</span>
-            <select value={p.era} onChange={(e) => set("era", e.target.value)}>
-              {ERAS.map((e) => (
-                <option key={e.id} value={e.id}>
-                  {e.name}
-                  {"recommended" in e && e.recommended ? "（推荐）" : ""}
-                  {"default" in e && e.default ? "（默认·新生ALO）" : ""}
-                </option>
-              ))}
-            </select>
+          <label className="span2">
+            姓名（必填）
+            <input
+              value={p.name}
+              onChange={(e) => set("name", e.target.value)}
+              placeholder="例如：小夜、芦哨"
+              autoFocus
+            />
           </label>
           <label>
             种族
             <span className="help">
               {p.race === "cait_sith"
-                ? "驯兽 / 短剑 / 骑兽 / 情报很快——真假都快。"
-                : `${race?.social ?? ""} MVP 内容仍在弗莉莉亚。`}
+                ? "推荐：猫妖。开局内容都在弗莉莉亚附近。"
+                : `${race?.name_zh ?? ""} · MVP 地图仍主要在弗莉莉亚。`}
             </span>
             <select value={p.race} onChange={(e) => set("race", e.target.value)}>
               {racesData.races.map((r) => (
@@ -85,7 +76,7 @@ export function CreateScreen({
             </select>
           </label>
           <label>
-            身份
+            开局身份
             <select value={p.origin} onChange={(e) => set("origin", e.target.value)}>
               {ORIGINS.map((o) => (
                 <option key={o.id} value={o.id}>
@@ -95,57 +86,81 @@ export function CreateScreen({
               ))}
             </select>
           </label>
-          <label>
-            性别
-            <select value={p.gender} onChange={(e) => set("gender", e.target.value)}>
-              {GENDERS.map((g) => (
-                <option key={g}>{g}</option>
-              ))}
-            </select>
-          </label>
-          <label>
-            出生地
-            <select value={p.birthplace} onChange={(e) => set("birthplace", e.target.value)}>
-              {BIRTHPLACES.map((b) => (
-                <option key={b.id} value={b.id}>
-                  {b.name}
-                </option>
-              ))}
-            </select>
-          </label>
-          <label>
-            元素亲和
-            <select value={p.affinity} onChange={(e) => set("affinity", e.target.value)}>
-              {AFFINITIES.map((a) => (
-                <option key={a.id} value={a.id}>
-                  {a.name}
-                </option>
-              ))}
-            </select>
-          </label>
-          <label className="span2">
-            现实侧（只影响可玩时段的叙事，不给数值外挂）
-            <input value={p.irl} onChange={(e) => set("irl", e.target.value)} />
-          </label>
-          <label className="span2">
-            性格三词
-            <input value={p.traits} onChange={(e) => set("traits", e.target.value)} />
-          </label>
-          <label className="span2">
-            一句话人生目标
-            <input value={p.goal} onChange={(e) => set("goal", e.target.value)} />
-          </label>
-          <label className="span2">
-            模拟风格
-            <select value={p.simStyle} onChange={(e) => set("simStyle", e.target.value)}>
-              {SIM_STYLES.map((s) => (
-                <option key={s.id} value={s.id}>
-                  {s.name}
-                </option>
-              ))}
-            </select>
-          </label>
         </div>
+
+        <button type="button" className="btn ghost advanced-toggle" onClick={() => setAdvanced((v) => !v)}>
+          {advanced ? "收起更多选项" : "更多选项（时代 / 性格 / 目标）"}
+        </button>
+
+        {advanced ? (
+          <div className="form-grid" style={{ marginTop: "0.8rem" }}>
+            <label>
+              时代
+              <select value={p.era} onChange={(e) => set("era", e.target.value)}>
+                {ERAS.map((e) => (
+                  <option key={e.id} value={e.id}>
+                    {e.name}
+                  </option>
+                ))}
+              </select>
+            </label>
+            <label>
+              外观年龄
+              <input value={p.ageLook} onChange={(e) => set("ageLook", e.target.value)} />
+            </label>
+            <label>
+              性别
+              <select value={p.gender} onChange={(e) => set("gender", e.target.value)}>
+                {GENDERS.map((g) => (
+                  <option key={g}>{g}</option>
+                ))}
+              </select>
+            </label>
+            <label>
+              出生地
+              <select value={p.birthplace} onChange={(e) => set("birthplace", e.target.value)}>
+                {BIRTHPLACES.map((b) => (
+                  <option key={b.id} value={b.id}>
+                    {b.name}
+                  </option>
+                ))}
+              </select>
+            </label>
+            <label>
+              元素亲和
+              <select value={p.affinity} onChange={(e) => set("affinity", e.target.value)}>
+                {AFFINITIES.map((a) => (
+                  <option key={a.id} value={a.id}>
+                    {a.name}
+                  </option>
+                ))}
+              </select>
+            </label>
+            <label>
+              模拟风格
+              <select value={p.simStyle} onChange={(e) => set("simStyle", e.target.value)}>
+                {SIM_STYLES.map((s) => (
+                  <option key={s.id} value={s.id}>
+                    {s.name}
+                  </option>
+                ))}
+              </select>
+            </label>
+            <label className="span2">
+              现实侧备注
+              <input value={p.irl} onChange={(e) => set("irl", e.target.value)} />
+            </label>
+            <label className="span2">
+              性格
+              <input value={p.traits} onChange={(e) => set("traits", e.target.value)} />
+            </label>
+            <label className="span2">
+              人生目标
+              <input value={p.goal} onChange={(e) => set("goal", e.target.value)} />
+            </label>
+          </div>
+        ) : null}
+
         <p className="err">{err ?? ""}</p>
         <div className="create-actions">
           <button type="button" className="btn ghost" onClick={onBack}>
@@ -160,7 +175,7 @@ export function CreateScreen({
               if (!e) onSubmit(p);
             }}
           >
-            展开第一对翅膀
+            进入游戏
           </button>
         </div>
       </div>
