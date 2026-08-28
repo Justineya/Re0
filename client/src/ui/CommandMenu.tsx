@@ -40,7 +40,9 @@ export function CommandMenu({
                 onClick={() => onAction(c.action)}
               >
                 {c.label}
-                {c.hint ? <span style={{ opacity: 0.65, marginLeft: 6, fontSize: "0.72rem" }}>{c.hint}</span> : null}
+                {c.hint ? (
+                  <span style={{ opacity: 0.65, marginLeft: 8, fontSize: "0.72rem" }}>· {c.hint}</span>
+                ) : null}
               </button>
             ))}
           </div>

@@ -1,5 +1,5 @@
 import { calendarLabel, clockLabel, todFromHour, TOD_ZH } from "../sim/time";
-import { districtName, locationName, raceById } from "../sim/content";
+import { districtName, locationName, ORIGINS, raceById } from "../sim/content";
 import { weatherZh } from "../sim/narrative";
 import type { GameState } from "../sim/types";
 
@@ -56,7 +56,7 @@ export function StatusPanel({ state }: { state: GameState }) {
       <div className="stat-kv">
         <span>种族 / 身份</span>
         <b>
-          {race?.name_zh} · {p.origin}
+          {race?.name_zh} · {ORIGINS.find((o) => o.id === p.origin)?.name ?? p.origin}
         </b>
       </div>
       <Bar cls="hp" lab="HP" v={p.hp} max={p.hpMax} />
