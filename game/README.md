@@ -25,6 +25,7 @@
 | [`docs/08-mvp-gameplay.md`](docs/08-mvp-gameplay.md) | **前期投入最少的玩法** |
 | [`data/`](data/) | 起始 JSON |
 | [`assets/portraits/`](assets/portraits/) | 占位立绘 |
+| [`../client/`](../client/) | **Phase 1** Vite+React 网页客户端 |
 
 ## 阅读顺序
 
