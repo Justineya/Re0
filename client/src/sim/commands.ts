@@ -1,4 +1,4 @@
-import { ADJACENT, COSTS, DISTRICT_META, districtName } from "./content";
+import { ADJACENT, COSTS, DISTRICT_META, districtName, locById, pricedYrd } from "./content";
 import { filterCommandsByGuide } from "./guide";
 import { npcsHere, npcLabel } from "./npcs";
 import { DAYS_PER_MONTH } from "./time";
@@ -10,10 +10,17 @@ export function hoursToMonthEnd(state: GameState): number {
   return Math.max(1, Math.round(left * 10) / 10);
 }
 
+function yrdHint(state: GameState, base: number): string {
+  const n = pricedYrd(state.world.priceIndex, base);
+  if (n === base) return `${base} Yrd`;
+  return `${n} Yrd（物价 ${state.world.priceIndex.toFixed(2)}）`;
+}
+
 export function listCommands(state: GameState): CommandDef[] {
   if (state.screen !== "game") return [];
   const cmds: CommandDef[] = [];
   const d = state.world.districtId;
+  const savedHuiya = state.causal.includes("save_huiya");
 
   if (state.combat) {
     cmds.push(
@@ -21,8 +28,16 @@ export function listCommands(state: GameState): CommandDef[] {
       { id: "c-spell", label: "法术", hint: "耗 MP", group: "combat", action: { type: "COMBAT", choice: "spell" } },
       { id: "c-flee", label: "逃跑", hint: "朝安全区 · 耗 STA", group: "combat", action: { type: "COMBAT", choice: "flee" }, warn: true },
       { id: "c-bypass", label: "绕开", hint: "合法", group: "combat", action: { type: "COMBAT", choice: "bypass" } },
-      { id: "c-help", label: "帮灰芽（不打）", hint: `护送 / ${COSTS.helpHuiya} Yrd`, group: "combat", action: { type: "COMBAT", choice: "help" } },
     );
+    if (!savedHuiya) {
+      cmds.push({
+        id: "c-help",
+        label: "帮灰芽（不打）",
+        hint: `护送 / ${yrdHint(state, COSTS.helpHuiya)}`,
+        group: "combat",
+        action: { type: "COMBAT", choice: "help" },
+      });
+    }
     return cmds;
   }
 
@@ -31,8 +46,16 @@ export function listCommands(state: GameState): CommandDef[] {
       { id: "w-fight", label: "交战", hint: "短剑或法术", group: "combat", action: { type: "COMBAT", choice: "fight" }, warn: true },
       { id: "w-shoo", label: "驱赶", hint: "失败则交战", group: "combat", action: { type: "COMBAT", choice: "shoo" } },
       { id: "w-bypass", label: "绕开", hint: "合法", group: "combat", action: { type: "COMBAT", choice: "bypass" } },
-      { id: "w-help", label: "帮灰芽（不战斗）", hint: "不打也能走", group: "combat", action: { type: "COMBAT", choice: "help" } },
     );
+    if (!savedHuiya) {
+      cmds.push({
+        id: "w-help",
+        label: "帮灰芽（不战斗）",
+        hint: "不打也能走 · 约 0.8 时",
+        group: "combat",
+        action: { type: "COMBAT", choice: "help" },
+      });
+    }
   }
 
   const neighbors = ADJACENT[d] ?? [];
@@ -49,16 +72,26 @@ export function listCommands(state: GameState): CommandDef[] {
   }
 
   for (const npcId of npcsHere(state)) {
+    const pendingDebunk = Boolean(state.flags.bought_mobei_rumor) && !state.flags.rumor_debunked;
     cmds.push({
       id: `t-${npcId}`,
       label: `交谈 · ${npcLabel(npcId, Boolean(state.flags[`talk_${npcId}`]))}`,
+      hint:
+        npcId === "npc_taixu" && pendingDebunk
+          ? "可求证墨碑传闻 · 约 0.25 时"
+          : npcId === "npc_huiya" && savedHuiya
+            ? "后勤名册 · 不是英雄"
+            : undefined,
       group: "talk",
       action: { type: "TALK", npcId },
+      accent: npcId === "npc_taixu" && pendingDebunk,
     });
   }
 
   const outdoor = DISTRICT_META[d]?.outdoor;
-  if (outdoor && state.world.weather !== "storm") {
+  const loc = locById(state.world.locationId);
+  const canFly = Boolean(outdoor) && loc?.flightAllowed !== false && state.world.weather !== "storm";
+  if (canFly) {
     if (state.player.flying) {
       cmds.push(
         { id: "f-cruise", label: "巡航", hint: "耗 STA", group: "act", action: { type: "FLIGHT", mode: "cruise" } },
@@ -79,40 +112,40 @@ export function listCommands(state: GameState): CommandDef[] {
 
   if (d === "grass_inn" || d === "reed_market") {
     cmds.push(
-      { id: "e-dry", label: `干粮`, hint: `${COSTS.foodDry} Yrd`, group: "act", action: { type: "EAT", item: "dry" } },
-      { id: "e-soup", label: `热汤`, hint: `${COSTS.foodSoup} Yrd`, group: "act", action: { type: "EAT", item: "soup" } },
+      { id: "e-dry", label: `干粮`, hint: `${yrdHint(state, COSTS.foodDry)} · 约 0.5 时`, group: "act", action: { type: "EAT", item: "dry" } },
+      { id: "e-soup", label: `热汤`, hint: `${yrdHint(state, COSTS.foodSoup)} · 约 0.5 时`, group: "act", action: { type: "EAT", item: "soup" } },
     );
   }
   if (d === "grass_inn") {
     cmds.push({
       id: "bed",
       label: "登记床位",
-      hint: `${COSTS.bed} Yrd · 含粥`,
+      hint: `${yrdHint(state, COSTS.bed)} · 含粥`,
       group: "act",
       action: { type: "REGISTER_BED" },
     });
     cmds.push({
       id: "gear",
       label: "租渔具",
-      hint: `${COSTS.gear} Yrd / 日`,
+      hint: `${yrdHint(state, COSTS.gear)} / 日`,
       group: "act",
       action: { type: "RENT_GEAR" },
     });
     cmds.push({
       id: "rest-inn",
       label: "在客栈歇息",
-      hint: "回 STA · 耗时",
+      hint: "回 STA · 4 时",
       group: "wait",
       action: { type: "WAIT", hours: 4, inn: true },
     });
   }
   if (d === "forge_clamp") {
     cmds.push(
-      { id: "rep", label: "修理", hint: `${COSTS.repair} Yrd`, group: "act", action: { type: "REPAIR", apprentice: false } },
+      { id: "rep", label: "修理", hint: `${yrdHint(state, COSTS.repair)} · 约 0.8 时`, group: "act", action: { type: "REPAIR", apprentice: false } },
       {
         id: "rep-a",
         label: "学徒价修理",
-        hint: `${COSTS.repairApprentice} Yrd · 要等`,
+        hint: `${yrdHint(state, COSTS.repairApprentice)} · 约 3 时`,
         group: "act",
         action: { type: "REPAIR", apprentice: true },
       },
@@ -122,7 +155,7 @@ export function listCommands(state: GameState): CommandDef[] {
     cmds.push({
       id: "rumor",
       label: "买墨碑情报",
-      hint: `${COSTS.rumor} Yrd · 传闻`,
+      hint: `${yrdHint(state, COSTS.rumor)} · 传闻`,
       group: "act",
       action: { type: "BUY_RUMOR" },
       warn: true,
@@ -132,25 +165,27 @@ export function listCommands(state: GameState): CommandDef[] {
     cmds.push({
       id: "feed",
       label: "买一份饲料",
-      hint: `${COSTS.feed} Yrd`,
+      hint: `${yrdHint(state, COSTS.feed)}`,
       group: "act",
       action: { type: "BUY_FEED" },
     });
   }
   if (outdoor) {
+    const pending = Boolean(state.flags.bought_mobei_rumor) && !state.flags.rumor_debunked;
     cmds.push({
       id: "tree",
-      label: "眺望世界树",
-      hint: "亲眼所见仅限远影",
+      label: pending ? "眺望世界树（对质传闻）" : "眺望世界树",
+      hint: pending ? "亲眼所见 vs 传闻 · 约 0.15 时" : "亲眼所见仅限远影",
       group: "act",
       action: { type: "LOOK_TREE" },
+      accent: pending,
     });
   }
   if (d === "oar_bay") {
     cmds.push({
       id: "gear2",
       label: "租渔具",
-      hint: `${COSTS.gear} Yrd`,
+      hint: `${yrdHint(state, COSTS.gear)}`,
       group: "act",
       action: { type: "RENT_GEAR" },
     });
@@ -165,6 +200,25 @@ export function listCommands(state: GameState): CommandDef[] {
       });
     }
   }
+  if (d === "canal_mouth") {
+    const runs = state.flags.canalRuns ?? 0;
+    cmds.push({
+      id: "canal-scour",
+      label: runs ? "再搜刮一层" : "搜刮旧渠一层",
+      hint: `约 2 时 · 耗 STA/DUR/HP · 材料衰减×${runs}`,
+      group: "act",
+      action: { type: "CANAL_SCOUR" },
+      warn: true,
+      accent: !runs,
+    });
+    cmds.push({
+      id: "canal-door",
+      label: "查看深层错误门",
+      hint: "上锁 · 约 0.4 时 · 无钥匙",
+      group: "act",
+      action: { type: "CANAL_DOOR" },
+    });
+  }
 
   cmds.push(
     { id: "w4", label: "等待至下一时段", hint: "4 小时", group: "wait", action: { type: "WAIT", hours: 4 } },
@@ -172,7 +226,7 @@ export function listCommands(state: GameState): CommandDef[] {
     {
       id: "wmonth",
       label: "等到月末",
-      hint: "月报会来",
+      hint: "月报 · 物价会动",
       group: "wait",
       action: { type: "WAIT", hours: hoursToMonthEnd(state) },
     },

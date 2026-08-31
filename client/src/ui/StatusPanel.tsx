@@ -74,7 +74,10 @@ export function StatusPanel({ state }: { state: GameState }) {
       </div>
       <div className="stat-kv">
         <span>价格指数</span>
-        <b>{w.priceIndex.toFixed(2)}</b>
+        <b>
+          {w.priceIndex.toFixed(2)}
+          {state.flags.market_tight ? " · 市集偏紧" : ""}
+        </b>
       </div>
       <div className="stat-kv">
         <span>情报权限</span>

@@ -261,6 +261,10 @@ export function reduce(state: GameState, action: GameAction): GameState {
       if (dest === "wing_yard") setFlag(s, "saw_yard");
       if (dest === "grass_inn") setFlag(s, "saw_inn");
       if (dest === "reed_market") setFlag(s, "saw_market");
+      if (dest === "canal_mouth") {
+        setFlag(s, "saw_canal");
+        if (s.player.flying) land(s);
+      }
       maybeEncounter(s);
       return s;
     }
@@ -295,6 +299,16 @@ export function reduce(state: GameState, action: GameAction): GameState {
           beat: "b6",
           text: "情报已记：NPC告知 · 苔须。不是亲眼看见云环。",
         });
+        if (flag(s, "bought_mobei_rumor") && !flag(s, "rumor_debunked")) {
+          setFlag(s, "rumor_debunked");
+          addIntel(s, "npc_told", "苔须", "墨碑那条「云环已破」是假的。日期对不上。");
+          push(s, {
+            kind: "system",
+            grade: "npc_told",
+            beat: "b6",
+            text: "【对照】传闻（墨碑）云环已破　vs　NPC告知（苔须）没破。没有弹窗表扬你聪明，只是两条情报叠在一起。",
+          });
+        }
       }
       if (npc === "npc_ling_xiaoman") {
         addIntel(s, "rumor", "铃小满", "歌词里仍是三层。像唱给板报听的。");
@@ -504,6 +518,68 @@ export function reduce(state: GameState, action: GameAction): GameState {
       const text = lookTreeProseLocal();
       addIntel(s, "eyewitness", "自己", "世界树远影。无攻略进度。");
       push(s, { kind: "narrative", beat: "b6", grade: "eyewitness", text });
+      if (flag(s, "bought_mobei_rumor") && !flag(s, "rumor_debunked")) {
+        setFlag(s, "rumor_debunked");
+        addIntel(s, "eyewitness", "自己", "远影仍是完整柱。看不见墨碑写的破口。传闻被拆穿。");
+        push(s, {
+          kind: "system",
+          beat: "b6",
+          grade: "eyewitness",
+          text: "【对照】传闻（墨碑）云环已破　vs　亲眼所见：柱影还在，没有洞。假新闻不退钱。没有命运弹窗。",
+        });
+      }
+      return s;
+    }
+    case "CANAL_SCOUR": {
+      if (s.world.districtId !== "canal_mouth") {
+        push(s, { kind: "system", text: "旧渠一层在南苔门方向。先走到入口。" });
+        return s;
+      }
+      land(s);
+      const runs = flag(s, "canalRuns");
+      const r = roll(s.rng);
+      s.rng = r.state;
+      const staCost = 18;
+      const durCost = 7;
+      const hpCost = 4 + Math.floor(r.n * 8);
+      s.player.sta = clamp(s.player.sta - staCost, 0, s.player.staMax);
+      s.player.dur = clamp(s.player.dur - durCost, 0, 100);
+      s.player.hp = clamp(s.player.hp - hpCost, 0, s.player.hpMax);
+      tickTime(s, 2);
+      const mul = Math.max(0.15, 1 - runs * 0.32);
+      const jitter = Math.floor(r.n * 3);
+      const loot = Math.max(1, Math.round((10 + jitter) * mul));
+      s.player.yrd += loot;
+      s.flags.canalRuns = runs + 1;
+      setFlag(s, "canal_cleared");
+      if (runs >= 1) setFlag(s, "canal_loot_decay");
+      push(s, {
+        kind: "narrative",
+        grade: "eyewitness",
+        text: `你沿着塌驿站走了一层。禁飞。水声像从更深处传来。耗 STA / DUR / HP。搜到 ${loot} Yrd 的锈件与劣矿。${runs >= 1 ? "同一条渠清过的人太多：材料在衰减。这不是副本重置。" : "脚印还在。下次再来，渠不会刷新成新的。"}没有神话钥匙。`,
+      });
+      if (s.player.hp <= 0) dieToClinic(s);
+      return s;
+    }
+    case "CANAL_DOOR": {
+      if (s.world.districtId !== "canal_mouth") {
+        push(s, { kind: "system", text: "错误门在旧渠更深处。你还没走到入口。" });
+        return s;
+      }
+      land(s);
+      tickTime(s, 0.4);
+      setFlag(s, "saw_error_door");
+      addIntel(
+        s,
+        "eyewitness",
+        "自己",
+        "深层门上锁。标签像旧 SAO 残片气味，没有钥匙，也没有攻略弹窗。",
+      );
+      push(s, {
+        kind: "narrative",
+        grade: "eyewitness",
+        text: "更深的台阶停在一扇不对劲的门前。封条写着城卫的字。门缝里有一股旧资料的气味——有人私下叫它错误门。锁着。危险度写着四。你没有被选中，也没有碎片任务。可以离开。",
+      });
       return s;
     }
     case "FISH": {

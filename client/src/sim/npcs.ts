@@ -37,6 +37,7 @@ export function npcDistrict(npcId: string, tod: TimeOfDay): string | null {
       night: "watch_keep",
     },
     npc_huiya: { dawn: "wing_yard", noon: "broken_wing", dusk: "wild_plain", night: "grass_inn" },
+    npc_huiya_saved: { dawn: "watch_keep", noon: "reed_market", dusk: "wing_yard", night: "grass_inn" },
   };
   return table[npcId]?.[tod] ?? null;
 }
@@ -60,6 +61,9 @@ export function npcsHere(state: GameState): string[] {
       "npc_huiya",
     ] as const
   ).filter((id) => {
+    if (id === "npc_huiya" && state.causal.includes("save_huiya")) {
+      return npcDistrict("npc_huiya_saved", tod) === here;
+    }
     if (id === "npc_huiya" && state.flags.huiya_left) return false;
     return npcDistrict(id, tod) === here;
   });

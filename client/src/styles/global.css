@@ -176,6 +176,7 @@ h1, h2, .display {
   font-size: 0.78rem;
   line-height: 1.55;
   color: var(--muted);
+  white-space: pre-line;
 }
 .guide-obj.done .obj-kicker { color: var(--gold); }
 .cmd-hint-banner {

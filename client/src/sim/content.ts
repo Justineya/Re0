@@ -145,7 +145,7 @@ export const DISTRICT_META: Record<
     name: "南苔门",
     locationId: "loc_amber_crossing",
     outdoor: true,
-    hint: "南林缘方向",
+    hint: "南林缘 / 旧渠方向",
   },
   wild_plain: {
     name: "北原草径",
@@ -175,9 +175,14 @@ export const DISTRICT_META: Record<
     name: "旧渠入口",
     locationId: "loc_old_canal",
     outdoor: false,
-    hint: "非副本。深层上锁",
+    hint: "危险度 2 · 禁飞 · 非副本 · 可离开",
   },
 };
+
+/** Shop prices follow the monthly priceIndex (already used by pay()). */
+export function pricedYrd(priceIndex: number, base: number): number {
+  return Math.max(1, Math.round(base * priceIndex));
+}
 
 export const ADJACENT: Record<string, string[]> = {
   wing_yard: ["reed_market", "grass_inn", "amber_gate_north"],
@@ -199,12 +204,12 @@ export const ADJACENT: Record<string, string[]> = {
   forge_clamp: ["reed_market", "night_well_alley"],
   night_well_alley: ["reed_market", "forge_clamp"],
   watch_keep: ["reed_market", "amber_gate_north"],
-  south_moss_gate: ["reed_market", "moss_edge"],
+  south_moss_gate: ["reed_market", "moss_edge", "canal_mouth"],
   wild_plain: ["amber_gate_north", "broken_wing", "oar_bay"],
   broken_wing: ["wild_plain", "oar_bay"],
   oar_bay: ["wild_plain", "broken_wing", "grass_inn"],
   moss_edge: ["south_moss_gate", "canal_mouth"],
-  canal_mouth: ["moss_edge", "reed_market"],
+  canal_mouth: ["moss_edge", "south_moss_gate"],
 };
 
 export function raceById(id: string): RaceRec | undefined {

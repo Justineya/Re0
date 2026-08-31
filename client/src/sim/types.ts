@@ -129,6 +129,8 @@ export type GameAction =
   | { type: "RENT_GEAR" }
   | { type: "BUY_RUMOR" }
   | { type: "LOOK_TREE" }
+  | { type: "CANAL_SCOUR" }
+  | { type: "CANAL_DOOR" }
   | { type: "BUY_FEED" }
   | { type: "FISH"; hours: 1 | 4 | 8 }
   | { type: "WAIT"; hours: number; inn?: boolean }

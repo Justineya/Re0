@@ -56,33 +56,54 @@ export function talkCopy(state: GameState, npcId: string, first: boolean): strin
           ? "「新翅膀？看牌子。STA 掉到两成就给我落地。摔伤的修理费自理，诊所在镜川那儿。」"
           : "「牌子还在。城内四十尺。雷暴关场。教官不负责你的人生目标。」";
       }
+      if (state.causal.includes("save_huiya")) {
+        return "「灰芽回场了。还是那块牌子。她搬箱子，你管自己的 STA。」";
+      }
       if (state.flags.crashed) {
         return "「看吧。翅膀不是无限外挂。去吃饭，STA 空着回得慢。」";
       }
       return "「落地了就对。去吃饭或修剑，别空着精力硬撑面子。」";
     case "npc_luhua":
       if (tod === "night") return "「打烊倒不是，锁兽栏了。床还在的话自己上楼。别把泥带进灶。」";
+      if (state.causal.includes("save_huiya")) {
+        return "「灰芽那丫头来吃过粥。后勤名册边上的名字，不是英雄榜。」";
+      }
       return first
         ? "「欢迎来津。床 8 Yrd一晚，包一口粥。渔具 3 铢日租。世界树？啊，你是说世界树。板报在弗莉莉亚市集。别全信。」"
         : "「在津，消息比饲料跑得快。真的少。要吃饭就说，要听闲话也行——我不当保证人。」";
     case "npc_tieqian":
+      if (state.flags.market_tight) {
+        return "「合金价往上爬。修一次按市价，别跟我讲情怀。旧渠那点锈铁也填不满缺口。」";
+      }
       if (state.flags.crashed && first) {
         return "「剑刃卷了。修一次 12 铢，学徒价 9 铢但要等。DUR 到 0 是废铁，不是情怀。」";
       }
       return "「报工号。刃口我看一眼。学徒价要排队，急件按全价。」";
     case "npc_mobei":
+      if (state.flags.rumor_debunked) {
+        return "「独家改成『未证实』了。退款？那是你买的娱乐。板报明天照样有人抄。」";
+      }
       return "「独家！云环已破，枢卫倒下！资料 15 铢！不买也行，反正板报上明天也会有人抄。」";
     case "npc_taixu":
+      if (state.flags.bought_mobei_rumor && !state.flags.rumor_debunked) {
+        return "「墨碑那张纸？日期对不上。营地还在，云环没破。合金紧是真的，枢卫倒下是他编的。」";
+      }
+      if (state.flags.rumor_debunked) {
+        return "「你对过远影就行。矿还是矿，门还是锁着。别把传闻写成履历。」";
+      }
       return "「营地还在。有人死了游戏里那种。没破。合金还是紧，别听市集喊。」";
     case "npc_ling_xiaoman":
       return "她把琴往肩上一靠，唱得很轻：「三层，还是三层——云环上面风好冷。」像儿歌，不像战报。";
     case "npc_asui":
+      if (state.flags.market_tight) {
+        return "「饲料袋上的价签又改了。兽不赊账，物价也不认你是驯兽学徒。」";
+      }
       return p(state).origin === "tamer_apprentice"
         ? "「兽也要吃。你不吃可以硬撑，它们会咬你。饲料五铢一份，别赊。」"
         : "「看可以。摸要问。琥珀今天不叫，算它赏脸。」";
     case "npc_huiya":
       if (state.causal.includes("save_huiya")) {
-        return "「谢了。我……我先回门。下次自己看风向。」她没有叫你英雄。";
+        return "「名册边上有我。搬箱子、数羽。没有弹窗说我是谁的命运。」她把灰从袖口弹掉。";
       }
       return "「我不是卡关。碑只是比桩高一点。风鼠那东西——你可以当没看见。」";
     case "npc_jingchuan":
@@ -90,6 +111,9 @@ export function talkCopy(state: GameState, npcId: string, first: boolean): strin
     case "npc_chisha":
       return "「护卫合同我有。你这样的翅膀，先活过北原再谈编制。」";
     case "npc_shian":
+      if (state.causal.includes("save_huiya")) {
+        return "「北门数字今天好看。后勤名册边上多了个灰芽。不是先锋编制。」";
+      }
       return "「北门数字今天好看。别在门岗试飞。出去自己看危险度。」";
     case "npc_jingdi":
       return "影巷摊上的人抬头：「……货有。问题也有。你不像来买答案的。」";
@@ -115,7 +139,7 @@ export function moveProse(districtId: string): string {
     broken_wing: "折翼碑的影子斜在草上。有人在碑座后喘气，翅膀还在抖。",
     oar_bay: "折桨湾的水拍旧码头。渔浮标一排，像不想参与攻略的人。",
     moss_edge: "南林缘的光碎成斑。你可以继续走，也可以回去吃饭。",
-    canal_mouth: "旧渠入口有城卫的封条和更旧的脚印。深层的门仍锁。你没有神话钥匙。",
+    canal_mouth: "旧渠入口有城卫的封条和更旧的脚印。这里不是副本：清过的锈还会在。深层的门仍锁。你没有神话钥匙。",
   };
   return map[districtId] ?? `你走到${name}。`;
 }
@@ -148,16 +172,22 @@ export function fishHourLine(hour: number, i: number): string {
   return lines[(hour + i) % lines.length] ?? lines[0];
 }
 
-export function monthNews(state: GameState): string[] {
+export function monthNews(state: GameState, prevIndex: number): string[] {
   const idx = state.world.priceIndex;
+  const delta = idx - prevIndex;
+  const sign = delta >= 0 ? "+" : "";
+  const tight = Boolean(state.flags.market_tight);
   const lines = [
     `【月报 · 地区】世界树攻略进度：云环第三层仍停滞。没有破。`,
-    `【月报 · 物价】弗莉莉亚价格指数 ${idx.toFixed(2)}。饲料与修理微调，神器仍不会从天上掉下来。`,
+    `【月报 · 物价】弗莉莉亚价格指数 ${prevIndex.toFixed(2)} → ${idx.toFixed(2)}（${sign}${delta.toFixed(2)}）。饲料、修理、情报都按新指数结算。${tight ? "市集偏紧：价签被改过。" : "还没到抢购的程度。"}神器仍不会从天上掉下来。`,
   ];
   if (state.causal.includes("save_huiya")) {
     lines.push("【月报 · 因果】灰芽出现在北门后勤名册边缘。不是命运，是她还活着、还想飞。");
   } else {
     lines.push("【月报 · 日常】折桨湾渔获一般。有人整月没出北门，也没人因此成为主角。");
+  }
+  if (tight) {
+    lines.push("【月报 · 日程】驯兽街收摊更早。铁钳把学徒价单往墙上又钉了一层。");
   }
   return lines;
 }

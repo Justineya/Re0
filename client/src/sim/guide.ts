@@ -125,5 +125,24 @@ export function filterCommandsByGuide(state: GameState, cmds: CommandDef[]): Com
 }
 
 export function freePlayBlurb(): string {
-  return "入门三步完成。你可以自由行动了：北原可以打也可以绕开；折桨湾能钓鱼（世界不会暂停）；等到月末会出月报。没有主线逼你攻略世界树。";
+  return "入门三步完成。没有主线逼你攻略世界树。南苔门可下旧渠（禁飞、材料会衰减）；墨碑的假新闻可以用远影或苔须对质；等到月末物价会动。";
+}
+
+export function softObjectives(state: GameState): { title: string; body: string } | null {
+  if (state.screen !== "game") return null;
+  if (!state.flags.tutorial_graduated && !state.flags.tutorial_skipped) return null;
+  const lines: string[] = [];
+  if (state.flags.bought_mobei_rumor && !state.flags.rumor_debunked) {
+    lines.push("· 对质墨碑：室外点「眺望世界树」，或等到苔须在场再交谈。对照【传闻】和【亲眼所见】/【NPC告知】。");
+  }
+  if (!state.flags.canalRuns) {
+    lines.push("· 旧渠一层：南苔门 → 南林缘（或直接从南苔门）→ 旧渠入口。禁飞、危险度 2、可随时离开。重复搜刮会衰减。");
+  }
+  if ((state.world.monthsPassed ?? 0) === 0) {
+    lines.push("· 等到月末：价格指数会变，饲料和修理跟涨。若帮过灰芽，月报会写后勤名册。");
+  }
+  if (lines.length === 0) {
+    return { title: "没有主线逼你", body: freePlayBlurb() };
+  }
+  return { title: "软目标（可忽略）", body: lines.join("\n") };
 }
